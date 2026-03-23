@@ -1,0 +1,25 @@
+User Action: Click "Add Todo"
+        │
+        ▼
+Frontend (script.js)
+        │
+        │ POST /todos
+        ▼
+Backend (Flask)
+        │
+        │ add_todo()
+        ▼
+todos.append(task)
+        │
+        ▼
+Response: {"message": "Todo added"}
+        │
+        ▼
+Frontend reloads list
+        │
+        │ GET /todos
+        ▼
+Backend returns updated list
+        │
+        ▼
+UI updates (DOM manipulation)

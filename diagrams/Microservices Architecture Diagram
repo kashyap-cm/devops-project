@@ -1,0 +1,27 @@
+          ┌──────────────────────┐
+          │      User Browser    │
+          │ (http://localhost:3000)
+          └──────────┬───────────┘
+                     │
+                     │ HTTP Requests (GET/POST/DELETE)
+                     ▼
+          ┌──────────────────────┐
+          │   Frontend Service   │
+          │  (HTML + JS + CSS)   │
+          │  Port: 3000          │
+          └──────────┬───────────┘
+                     │
+                     │ API Calls (fetch)
+                     ▼
+          ┌──────────────────────┐
+          │   Backend Service    │
+          │     Flask API        │
+          │  Port: 5000          │
+          └──────────┬───────────┘
+                     │
+                     │ In-Memory Storage
+                     ▼
+          ┌──────────────────────┐
+          │       Todos List     │
+          │   (Python list)      │
+          └──────────────────────┘
