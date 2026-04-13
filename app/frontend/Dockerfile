@@ -1,11 +1,13 @@
-# Use nginx
 FROM nginx:alpine
 
-# Copy frontend files to nginx default folder
-COPY . /usr/share/nginx/html
+# Remove default nginx content
+RUN rm -rf /usr/share/nginx/html/*
 
-# Expose port
+# Copy only required files
+COPY index.html /usr/share/nginx/html/
+COPY script.js /usr/share/nginx/html/
+COPY style.css /usr/share/nginx/html/
+
 EXPOSE 80
 
-# Run nginx
 CMD ["nginx", "-g", "daemon off;"]
