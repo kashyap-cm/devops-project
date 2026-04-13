@@ -1,18 +1,24 @@
+# Stage 1: Build dependencies
+FROM python:3.9-slim AS builder
+
+WORKDIR /app
+
+COPY requirements.txt .
+
+RUN pip install --no-cache-dir --prefix=/install -r requirements.txt
+
+
+# Stage 2: Final image
 FROM python:3.9-slim
 
 WORKDIR /app
 
-# Copy requirements first (for caching)
-COPY requirements.txt .
+# Copy only installed packages
+COPY --from=builder /install /usr/local
 
-# Install dependencies
-RUN pip install --no-cache-dir -r requirements.txt
-
-# Copy backend code
+# Copy app code
 COPY . .
 
-# Expose Flask port
 EXPOSE 5000
 
-# Run the app
 CMD ["python", "firstTODO.py"]
