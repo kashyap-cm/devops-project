@@ -1,0 +1,19 @@
+version: '3.8'
+
+services:
+
+  backend:
+    build: ./app/backend
+    image: todo-backend:v1.0.0   # ✅ custom name
+    container_name: todo-backend
+    ports:
+      - "5000:5000"
+
+  frontend:
+    build: ./app/frontend
+    image: todo-frontend:v1.0.0  # ✅ custom name
+    container_name: todo-frontend
+    ports:
+      - "3000:80"
+    depends_on:
+      - backend
