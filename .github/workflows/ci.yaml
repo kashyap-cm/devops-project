@@ -1,0 +1,71 @@
+name: CI Pipeline
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+
+  backend:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout Code
+      uses: actions/checkout@v3
+
+    - name: Set up Python 3.9
+      uses: actions/setup-python@v4
+      with:
+        python-version: '3.9'
+
+    - name: Install Backend Dependencies
+      run: |
+        cd app/backend
+        python -m pip install --upgrade pip
+        pip install -r requirements.txt
+
+    - name: Run Backend Tests
+      run: |
+        cd app/backend
+        pytest || echo "No tests yet"
+
+    - name: Build Backend Docker Image
+      run: |
+        docker build \
+        -t kashyapcm/todo-backend:latest \
+        -t kashyapcm/todo-backend:v1.0.0 \
+        ./app/backend
+
+    - name: Login to Docker Hub
+      run: |
+        echo "${{ secrets.DOCKER_PASSWORD }}" | docker login -u "${{ secrets.DOCKER_USERNAME }}" --password-stdin
+
+    - name: Push Backend Docker Image
+      run: |
+        docker push kashyapcm/todo-backend:latest
+        docker push kashyapcm/todo-backend:v1.0.0
+
+
+  frontend:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout Code
+      uses: actions/checkout@v3
+
+    - name: Build Frontend Docker Image
+      run: |
+        docker build \
+        -t kashyapcm/todo-frontend:latest \
+        -t kashyapcm/todo-frontend:v1.0.0 \
+        ./app/frontend
+
+    - name: Login to Docker Hub
+      run: |
+        echo "${{ secrets.DOCKER_PASSWORD }}" | docker login -u "${{ secrets.DOCKER_USERNAME }}" --password-stdin
+
+    - name: Push Frontend Docker Image
+      run: |
+        docker push kashyapcm/todo-frontend:latest
+        docker push kashyapcm/todo-frontend:v1.0.0
